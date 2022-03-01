@@ -1,0 +1,43 @@
+---
+title: "Linear Regression"
+author: "Yichang Liu 501777"
+date: "1/3/2022"
+output: pdf_document
+---
+
+\section{Linear Regression}
+```{r}
+library(MASS)
+attach(Boston)
+names(Boston)
+```
+\subsection{Main Part of Linear Regression}
+```{r}
+lm.fit=lm(medv~lstat, data = Boston)
+names(lm.fit)
+summary(lm.fit) ### more information
+```
+
+Least Square Method: $MSE = \frac{1}{n}\sum^{n}_{i=1}(Y_i-\hat{Y}_i)^2 = \frac{1}{n}\sum^{n}_{i=1}(Y_i-\hat{\beta_0} - \hat{\beta_1}X_1, ....,\hat{\beta_p}X_p)^2$. 
+
+\subsection{Coefficient}
+Use the elements in the names(lm.fit)
+```{r}
+lm.fit$coefficients  ### the first method
+coef(lm.fit)         ### the second method
+```
+
+\subsection{Confidence Interval and Prediction Interval}
+```{r}
+confint(lm.fit)      ### confidence interval for Betas
+```
+
+\textbf{Predict using predict():}
+
+Prediction intervals must account for both the uncertainty in estimating the population mean, plus the random variation of the individual values. So a prediction interval is always wider than a confidence interval. The prediction interval will not converge to a single value as the sample size increases.
+
+\textbf{Prediction interval:}
+```{r}
+predict(lm.fit, data.frame(lstat=c(5,10,15)), interval="confidence")
+predict(lm.fit,data.frame(lstat=c(5,10,15)),interval="prediction")
+```

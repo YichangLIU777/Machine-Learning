@@ -1,0 +1,55 @@
+---
+title: "KNN_R"
+author: "Yichang Liu 501777"
+date: "1/8/2022"
+output: pdf_document
+---
+```{r}
+library(ISLR)
+library(class)
+```
+
+```{r}
+attach(Smarket)
+```
+
+
+```{r}
+train = (Year<2005)
+train.X = cbind(Lag1,Lag2)[train,]
+dim(train.X)
+test.X = cbind(Lag1,Lag2)[!train,]
+dim(test.X)
+```
+
+```{r}
+table(Direction)
+train.Direction = Direction[train]
+table(train.Direction)
+Direction.2005 = Direction[!train]
+table(Direction.2005)
+```
+
+\subsection{KNN Regression}
+```{r}
+set.seed(1)
+```
+
+knn(a, b, c, d): a is x of train data; b is x of test data; c is y of train data, d is to define how many k we will use. 
+
+knn.pred is all the (predicted test.Y) we will have. 
+```{r}
+knn.pred = knn(train.X,test.X,train.Direction,k=1)
+length(knn.pred)
+```
+we compare (predicted test.Y) with (origial test.Y)
+```{r}
+table(knn.pred,Direction.2005)
+```
+
+Use mean(knn.pred == Direction.2005) to get the accuracy. 
+```{r}
+accurate_rate = mean(knn.pred == Direction.2005)
+accurate_rate
+error_rate = 1 - mean(knn.pred == Direction.2005)
+```
